@@ -1,1 +1,2 @@
-# Braille-Device-for-the-Deaf-Blind
+#Speech Recognition and Object Detection
+#Braille Device for the Deaf-Blind
