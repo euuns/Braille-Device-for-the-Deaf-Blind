@@ -1,0 +1,74 @@
+import brailleMapping as bm
+
+# 초성 리스트. 00 ~ 18
+CHOSUNG_LIST = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ',
+                'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
+# 중성 리스트. 00 ~ 20
+JUNGSUNG_LIST = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ',
+                 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ']
+# 종성 리스트. 00 ~ 27 + 1(1개 없음)
+JONGSUNG_LIST = [' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ', 'ㄼ',
+                 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
+
+# 단어를 각 글자별로 초성,중성,종성 나누기
+def spilltWord(korean_word):
+    r = []
+    x = []
+    for w in list(korean_word.strip()):
+        cho = (ord(w) - ord('가')) // 588
+        jung = ((ord(w) - ord('가')) - (588 * cho)) // 28
+        jong = (ord(w) - ord('가')) - (588 * cho) - (28 * jung)
+        
+        r.append(CHOSUNG_LIST[cho])
+        r.append(JUNGSUNG_LIST[jung])
+        r.append(JONGSUNG_LIST[jong])
+
+        x.append(list(r))
+        r = []
+
+    return x
+
+# 자모음을 점자 형태로 변환
+def testBraille(hangul):
+    consonant = spilltWord(hangul)
+    cho = []
+    jung = []
+    jong = []
+
+    for x in consonant:
+        for y in range(len(x)):
+            if y == 0:
+                cho = bm.CHO[x[y]]
+            elif y == 1:
+                jung = bm.JUNG[x[y]]
+            else:
+                if x[y] != " ":
+                    jong = bm.JONG[x[y]]
+
+        if jong:
+            print(cho, jung, jong)
+            jong.clear()
+        else:
+            print(cho, jung)
+            
+
+
+# 변환 테스트
+testText = '자동차'
+# x = getJamoFromOneSyllable(testText)
+
+testBraille(testText)
+
+# print(x)
+
+
+# KorToBraille 라이브러리를 이용해 한글을 점자로 변환
+# 해당 라이브러리와 비교하여 작성 코드 검증을 위해 임시 작성
+from KorToBraille.KorToBraille import KorToBraille
+
+b = KorToBraille()
+print(b.korTranslate('자동차'))
+print(b.korTranslate('자'))
+print(b.korTranslate('동'))
+print(b.korTranslate('차'))
+
