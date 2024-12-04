@@ -30,6 +30,37 @@ def spilltWord(korean_word):
     return x
 
 
+def printBrailleResult(cho, jung, jong=None):
+    # 초성, 중성, 종성 처리 함수
+
+    # 초성 출력
+    for i in range(3):  # 3행
+        if len(cho) > i:  # 리스트 길이를 체크하여 오류를 방지
+            print(f"{cho[i][0]} {cho[i][3]}")
+            print(f"{cho[i][1]} {cho[i][4]}")
+            print(f"{cho[i][2]} {cho[i][5]}")
+
+    # 중성 출력
+    for i in range(3):
+        if len(jung) > i:
+            print(f"{jung[i][0]} {jung[i][3]}")
+            print(f"{jung[i][1]} {jung[i][4]}")
+            print(f"{jung[i][2]} {jung[i][5]}")
+
+    # 종성 출력 (없을 경우 기본값 출력)
+    if jong is None:
+        jong = [[0, 0, 0, 0, 0, 0]]
+
+    for i in range(3):
+        if len(jong) > i:
+            print(f"{jong[i][0]} {jong[i][3]}")
+            print(f"{jong[i][1]} {jong[i][4]}")
+            print(f"{jong[i][2]} {jong[i][5]}")
+
+    print()  # 줄바꿈
+
+
+
 # 자모음을 점자 형태로 변환
 def word2Braille(hangul):
     consonant = spilltWord(hangul)
@@ -46,37 +77,7 @@ def word2Braille(hangul):
             else:
                 if x[y] != " ":
                     jong = bm.JONG[x[y]]
+                else:
+                    jong = None  # 종성이 없을 경우 None으로 설정
 
-        if jong:
-            printBrailleResult(cho, jung, jong)
-            jong.clear()
-        else:
-            printBrailleResult(cho, jung)
-        
-
-
-def printBrailleResult(cho, jung, jong=0):
-    # 초성, 중성, 종성 처리 함수
-
-    # 초성 출력
-    for i in range(3):
-        if len(cho) > i:  # 리스트 길이를 체크하여 오류를 방지
-            print(f"{cho[i][0]} {cho[i][3]}")
-            print(f"{cho[i][1]} {cho[i][4]}")
-            print(f"{cho[i][2]} {cho[i][5]}")
-
-    # 중성 출력
-    for i in range(3):  # 3행
-        if len(jung) > i:  # 리스트 길이를 체크하여 오류를 방지
-            print(f"{jung[i][0]} {jung[i][3]}")
-            print(f"{jung[i][1]} {jung[i][4]}")
-            print(f"{jung[i][2]} {jung[i][5]}")
-
-    # 종성 출력
-    if jong != 0:
-        for i in range(3):  # 3행
-            if len(jong) > i:  # 리스트 길이를 체크하여 오류를 방지
-                print(f"{jong[i][0]} {jong[i][3]}")
-                print(f"{jong[i][1]} {jong[i][4]}")
-                print(f"{jong[i][2]} {jong[i][5]}")
-
+        printBrailleResult(cho, jung, jong)
